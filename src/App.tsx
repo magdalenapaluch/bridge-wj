@@ -107,14 +107,13 @@ function App() {
     ) {
       return `1♥️, ${explanation}`;
     } else if (
-      (diamonds.length >= 5 && truePointCount >= 12 && truePointCount <= 14) ||
+      (diamonds.length === 5 && truePointCount >= 12 && truePointCount <= 14) ||
+      (diamonds.length >= 6 && truePointCount >= 12 && truePointCount <= 17) ||
       (diamonds.length >= 6 && truePointCount === 11) ||
       (truePointCount >= 12 &&
         truePointCount <= 17 &&
         diamonds.length === 4 &&
-        lengthsArray.filter(
-          (item, index) => lengthsArray.indexOf(item) !== index
-        ).length === 3) ||
+        lengthsArray.filter((item) => item === 4).length === 3) ||
       (diamonds.length === 4 &&
         clubs.length === 5 &&
         truePointCount >= 12 &&
@@ -125,9 +124,14 @@ function App() {
       truePointCount >= 15 &&
       truePointCount <= 17 &&
       hearts.length < 5 &&
-      spades.length < 5
+      spades.length < 5 &&
+      !lengthsArray.includes(1) &&
+      !lengthsArray.includes(0) &&
+      clubs.length < 6 &&
+      diamonds.length < 6
     ) {
       return `1BA, ${explanation}`;
+      //a możesz tam zrobić alternatywę? żeby z jednej strony wpisać długości pomiędzy 2 a 4 i dodać ten wyjątek 5332? bo inaczej będzie otwierał też w 5m4M22
     } else if (
       (truePointCount >= 12 &&
         truePointCount <= 14 &&
@@ -142,12 +146,15 @@ function App() {
       truePointCount >= 18
     ) {
       return `1♣️, ${explanation}`;
-    }else {
+    } else {
       return `PAS, ${explanation}`;
     }
-	//TODO: dodaj bloki
+    //TODO: dodaj bloki,
+    // 	w 11 pkt otwieramy, gdy:
+    // - 6+ w kolorze
+	// - 5 5 w dwóch kolorach
+	// w 55, 4441 i 5440 otwarcia w 11
   };
-
 
   const coloredCards = (cards) => {
     const spades = cards.filter((card) => card.suit === sortedColors.SPADES);
@@ -224,6 +231,7 @@ function App() {
           );
         })}
       </div>
+      <h3>v0.0.2</h3>
     </div>
   );
 }

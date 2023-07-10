@@ -29,7 +29,8 @@
 }
 
 .card {
-	margin-left: -180px
+	margin-left: -17%;
+	max-width: 22vw;
 }
 
 .firstCard {
