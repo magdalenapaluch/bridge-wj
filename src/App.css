@@ -1,5 +1,8 @@
 .App {
 	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .App-logo {
@@ -28,21 +31,76 @@
 	color: #61dafb;
 }
 
+.wrapper {
+	max-width: 1050px;
+	padding-top: 30px;
+}
+
+/* .cards {
+	display: flex;
+	flex-direction: row;
+} */
+
 .card {
 	margin-left: -17%;
 	max-width: 22vw;
+	transition: .2s;
+	position: relative;
+	display: inline-block;
+}
+
+.cardImage {
+	max-width: 22vw;
+	transition: .2s;
+}
+
+.cardImage.front {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+
+.cardImageBack__wrapper {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
 }
 
 .firstCard {
 	margin: 0
 }
 
-@keyframes App-logo-spin {
+.red {
+	color: 'red'
+}
+
+.bid {
+	min-height: 32px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.bid h2 {
+	margin: 0;
+}
+
+.interface {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+@keyframes fadeIn {
 	from {
-		transform: rotate(0deg);
+		opacity: 0;
 	}
 
 	to {
-		transform: rotate(360deg);
+		opacity: 1;
 	}
 }

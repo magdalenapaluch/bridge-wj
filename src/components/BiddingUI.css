@@ -1,0 +1,18 @@
+.biddingUI {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.row {
+	display: flex;
+}
+
+.suits {
+	margin-top: 20px;
+}
+
+.biddingUI_button {
+	margin: 2px 3px;
+}
