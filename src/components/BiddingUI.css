@@ -3,16 +3,23 @@
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	margin: 0 20px;
 }
 
 .row {
 	display: flex;
+	flex-wrap: wrap;
+    justify-content: center;
+}
+
+.row-numbers {	
+	margin-bottom: 5px;
 }
 
 .suits {
-	margin-top: 20px;
+	margin-bottom: 20px;
 }
 
 .biddingUI_button {
-	margin: 2px 3px;
+	margin: 2px 3px !important;
 }

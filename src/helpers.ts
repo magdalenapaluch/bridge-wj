@@ -5,6 +5,8 @@ export const enum suitsEnum {
   "CLUBS" = "CLUBS",
 }
 
+export type Trump = suitsEnum | "NT";
+
 export const higherCardsArray = ["JACK", "QUEEN", "KING", "ACE"];
 
 export const higherCardsMap = {
@@ -41,4 +43,34 @@ export const isSingle = (cards) => {
       return false;
   }
 };
+export interface BidExplanation {
+  number: number;
+  trump: Trump;
+  bidString: string;
+  explanationString: string;
+}
 
+export const colorsLibrary = new Map();
+
+colorsLibrary.set(suitsEnum.SPADES, "♠️");
+colorsLibrary.set(suitsEnum.HEARTS, "♥️");
+colorsLibrary.set(suitsEnum.DIAMONDS, "♦️");
+colorsLibrary.set(suitsEnum.CLUBS, "♣️");
+// [
+//     {
+//       name: suitsEnum.SPADES,
+//       suit: "♠️",
+//     },
+//     {
+//       name: suitsEnum.HEARTS,
+//       suit: "♥️",
+//     },
+//     {
+//       name: suitsEnum.DIAMONDS,
+//       suit: "♦️",
+//     },
+//     {
+//       name: suitsEnum.CLUBS,
+//       suit: "♣️",
+//     },
+//   ];

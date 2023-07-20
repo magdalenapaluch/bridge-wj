@@ -1,15 +1,29 @@
 .App {
 	text-align: center;
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
+body::-webkit-scrollbar {
+	display: none;
+  }
+
+.wrapper {
+	max-width: 1050px;
+	padding-top: 30px;
 }
 
 .App-logo {
 	height: 40vmin;
 	pointer-events: none;
 }
-
+.big {
+	font-size:20px;
+	font-weight: bold;
+}
 @media (prefers-reduced-motion: no-preference) {
 	.App-logo {
 		animation: App-logo-spin infinite 20s linear;
@@ -31,11 +45,6 @@
 	color: #61dafb;
 }
 
-.wrapper {
-	max-width: 1050px;
-	padding-top: 30px;
-}
-
 /* .cards {
 	display: flex;
 	flex-direction: row;
@@ -44,16 +53,17 @@
 .card {
 	margin-left: -17%;
 	max-width: 22vw;
-	transition: .2s;
-	position: relative;
 	display: inline-block;
+	/* transition: .2s;
+	position: relative;
+	display: inline-block; */
 }
 
 .cardImage {
 	max-width: 22vw;
-	transition: .2s;
 }
 
+/*
 .cardImage.front {
 	position: absolute;
 	left: 0;
@@ -68,7 +78,7 @@
 	right: 0;
 	top: 0;
 	bottom: 0;
-}
+} */
 
 .firstCard {
 	margin: 0
@@ -95,12 +105,6 @@
 	align-items: center;
 }
 
-@keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-
-	to {
-		opacity: 1;
-	}
+.cards-wrapper {
+	margin: 30px auto;
 }

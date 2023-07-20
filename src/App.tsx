@@ -1,33 +1,34 @@
-import {
-  Button,
-  Switch,
-  FormGroup,
-  FormControlLabel,
-  TextField,
-} from "@mui/material";
-import { useEffect, useState, useMemo } from "react";
+import { Button, FormControlLabel, FormGroup, Switch } from "@mui/material";
+import { useEffect, useMemo, useState } from "react";
 import "./App.css";
-import { higherCardsArray, higherCardsMap, coloredCards } from "./helpers.ts";
-import { getOpeningBid } from "./helpers/getOpeningBid.ts";
 import { BiddingUI } from "./components/BiddingUI.tsx";
+import { Card } from "./components/Card.tsx";
+import {
+  coloredCards,
+  higherCardsArray,
+  higherCardsMap,
+  suitsEnum,
+  Trump,
+  BidExplanation,
+  colorsLibrary,
+} from "./helpers.ts";
+import { getOpeningBid } from "./helpers/getOpeningBid.ts";
 
 function App() {
   const [deckId, setDeckId] = useState("");
   const [southCards, setSouthCards] = useState([]);
-  const [southOpeningBid, setSouthOpeningBid] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [northCards, setNorthCards] = useState([]);
-  const [regenerateRandomNumbers, setRegenerateRandomNumbers] = useState(false);
-  const randomNumbers = useMemo(() => {
-    return Array.from({ length: 39 }).map((element) => {
-      return Math.random();
-    });
-  }, [regenerateRandomNumbers]);
+  const [southOpeningBid, setSouthOpeningBid] = useState<BidExplanation | null>(
+    null
+  );
+  const [showExplanation, setShowExplanataion] = useState(false);
+  const [bidNumber, setBidNumber] = useState<number | null>(null);
+  const [bidTrump, setBidTrump] = useState<Trump>();
+  const [tested, setTested] = useState<boolean | null>(null);
 
   const getDeckID = () => {
     setIsLoading(true);
-    setSouthCards(Array.from({ length: 13 }));
-    setSouthOpeningBid("");
+    setSouthOpeningBid(null);
     fetch("https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1")
       .then((response) => {
         if (response.ok) {
@@ -45,9 +46,11 @@ function App() {
 
   const reshuffle = () => {
     if (!deckId) return;
-    setSouthCards(Array.from({ length: 13 }));
+    setTested(null);
     setIsLoading(true);
-    setSouthOpeningBid("");
+    setSouthOpeningBid(null);
+    setBidNumber(null);
+    setBidTrump(null);
     fetch(`https://www.deckofcardsapi.com/api/deck/${deckId}/shuffle/`)
       .then((response) => {
         if (response.ok) {
@@ -62,22 +65,12 @@ function App() {
           setSouthCards(southCards);
           setSouthOpeningBid(getOpeningBid(southCards));
         });
-
-        get13CardsFromDeckId().then((cards) => {
-          const { spades, hearts, clubs, diamonds } = coloredCards(cards);
-          setNorthCards([...spades, ...hearts, ...clubs, ...diamonds]);
-        });
       })
       .catch((error) => {
         console.log(error);
       })
       .finally(() => {
         setIsLoading(false);
-
-        setRegenerateRandomNumbers((prevState) => {
-          console.log("runs");
-          return !prevState;
-        });
       });
   };
 
@@ -105,9 +98,6 @@ function App() {
       return cardB.hierarchyValue - cardA.hierarchyValue;
     });
   };
-  useEffect(() => {
-    console.log(regenerateRandomNumbers);
-  }, [regenerateRandomNumbers]);
 
   useEffect(() => {
     if (!deckId) return;
@@ -119,68 +109,40 @@ function App() {
       setIsLoading(false);
       setSouthOpeningBid(getOpeningBid(southCards));
     });
-
-    // get13CardsFromDeckId().then((cards) => {
-    //   const { spades, hearts, clubs, diamonds } = coloredCards(cards);
-    //   setNorthCards([...spades, ...hearts, ...clubs, ...diamonds]);
-    // });
   }, [deckId]);
 
-  const toggleExplanation = () => {};
+  const toggleExplanation = () => {
+    setShowExplanataion((e) => !e);
+  };
 
   const southCardsList = useMemo(
     () =>
       southCards.map((card, index) => {
-        return (
-          <div
-            key={`card-index`}
-            style={{
-              position: "relative",
-              transform: `rotate(${randomNumbers[index] * 4 - 2}deg)`,
-              left: `${randomNumbers[index * 2] * 10 - 5}px`,
-              top: `${randomNumbers[index * 3] * 10 - 5}px`,
-              transition: `.2s ease-in ${index / 20}s`,
-            }}
-            className={`card${index === 0 ? " firstCard" : ""}`}
-          >
-            <img
-              src={"https://www.deckofcardsapi.com/static/img/back.png"}
-              className="cardImage back "
-            />
-            <img src={card?.image} className="cardImage front " />
-            <div
-              className="cardImageBack__wrapper"
-              //TODO: fix animation
-              style={{
-                opacity: isLoading || !card ? 1 : 0,
-                transition: `.2s`,
-                transitionDelay: `${index / 20}s`,
-              }}
-            >
-              <img
-                src={"https://www.deckofcardsapi.com/static/img/back.png"}
-                className="cardImage back "
-              />
-            </div>
-          </div>
-        );
+        return <Card card={card} index={index} key={index} />;
       }),
     [southCards]
   );
 
+  const handleBidNumber = (num) => {
+    setBidNumber(num);
+  };
+  const handleBidTrump = (trump) => {
+    setBidTrump(trump);
+  };
+  const checkAnswer = () => {
+    console.log(southOpeningBid, bidNumber, bidTrump);
+    if (
+      southOpeningBid.number === bidNumber &&
+      southOpeningBid.trump == bidTrump
+    ) {
+      setTested(true);
+    } else {
+      setTested(false);
+    }
+  };
   return (
     <div className="App">
       <div className="wrapper">
-        {/* <div className="cards">
-          {northCards.map((card, index) => {
-            return (
-              <img
-                src="https://www.deckofcardsapi.com/static/img/back.png"
-                className={`card ${index === 0 && "firstCard"}`}
-              />
-            );
-          })}
-        </div> */}
         <div className="interface">
           <Button variant="outlined" onClick={reshuffle}>
             Przetasuj
@@ -193,14 +155,56 @@ function App() {
             />
           </FormGroup>
         </div>
-        {/* <h1>--------------</h1> */}
-        <div className="bid">
-          {!isLoading && southOpeningBid && <h2>{southOpeningBid}</h2>}
-          {/* <BiddingUI /> */}
+        <div className="cards-wrapper">
+          <div className="cards">{southCardsList}</div>
         </div>
-        <div className="cards">{southCardsList}</div>
-        <h3>v0.0.3</h3>
+        <div className="bid">
+          {!isLoading && southOpeningBid && showExplanation && (
+            <>
+              <h2>{`${southOpeningBid.bidString}`}</h2>
+              <p>{`${southOpeningBid.explanationString}`}</p>
+            </>
+          )}
+          {tested === null && !showExplanation && (
+            <BiddingUI
+              bidNumber={bidNumber}
+              handleBidNumber={handleBidNumber}
+              bidTrump={bidTrump}
+              handleBidTrump={handleBidTrump}
+              bidAnswer={southOpeningBid}
+              checkAnswer={checkAnswer}
+            />
+          )}
+          {tested !== null && (
+            <>
+              <div className="tested">
+                <p>
+                  Twoja odpowiedź:
+                  <span className="big">
+                    {bidNumber === 0
+                      ? " PAS"
+                      : `${bidNumber}${
+                          bidTrump === "NT" ? "BA" : colorsLibrary.get(bidTrump)
+                        }`}
+                  </span>
+                </p>
+                {tested ? (
+                  <p>To prawidłowa odpowiedź</p>
+                ) : (
+                  <p>
+                    Źle, prawidłowa odpowiedź to:
+                    <span className="big">{southOpeningBid.bidString}</span>
+                  </p>
+                )}
+              </div>
+              <Button variant="outlined" onClick={reshuffle}>
+                Przetasuj
+              </Button>
+            </>
+          )}
+        </div>
       </div>
+      <p style={{ textAlign: "right", fontSize: "12px" }}>v0.0.5</p>
     </div>
   );
 }
