@@ -1,4 +1,4 @@
-import { suitsEnum } from "../helpers";
+import { suitsEnum } from "../../helpers.ts";
 
 interface Card {
   code: string;

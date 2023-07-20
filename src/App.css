@@ -117,10 +117,3 @@ body::-webkit-scrollbar {
 .cards-wrapper {
 	margin: 30px auto;
 }
-
-.drawer-row {
-	border-bottom: 1px solid #F5E9E2;
-	text-align: right;
-	padding-left:20px
-	
-}

@@ -17,11 +17,11 @@ const isInRange = (x, min, max) => {
 export const getOpeningBid = (cards): BidExplanation => {
   const { spades, hearts, diamonds, clubs } = coloredCards(cards);
 
-  const lengthsArray: { suit: suitsEnum; length: number }[] = [
-    { suit: suitsEnum.SPADES, length: spades.length },
-    { suit: suitsEnum.HEARTS, length: hearts.length },
-    { suit: suitsEnum.DIAMONDS, length: diamonds.length },
-    { suit: suitsEnum.CLUBS, length: clubs.length },
+  const lengthsArray: { suit: suitsEnum; length: number; cards: any }[] = [
+    { suit: suitsEnum.SPADES, length: spades.length, cards: spades },
+    { suit: suitsEnum.HEARTS, length: hearts.length, cards: hearts },
+    { suit: suitsEnum.DIAMONDS, length: diamonds.length, cards: diamonds },
+    { suit: suitsEnum.CLUBS, length: clubs.length, cards: clubs },
   ];
 
   const sortedLengthsArray: number[] = lengthsArray
@@ -54,7 +54,7 @@ export const getOpeningBid = (cards): BidExplanation => {
     const suitLength = lengthsArray.find((el) => el.suit === suit).length;
     return (
       suitLength >= 6 || //6+ w kolorze
-      (suitLength === 5 && // 55
+      (suitLength === 5 &&  // 55
         sortedLengthsArray.filter((number) => number === 5).length >= 2) ||
       (suitLength === 5 && // 5440
         isEqual([5, 4, 4, 0], sortedLengthsArray))
@@ -82,9 +82,11 @@ export const getOpeningBid = (cards): BidExplanation => {
       [6, 7, 8, 9].includes(el)
     )[0];
 
-    const bidValue = longSuitLength - 4; //for 6 in suit it would be 2, for 7->3 and so on
+    const bidValue = longSuitLength - 4; // for 6 in suit it would be 2, for 7->3 and so on
     if (isInRange(PC, 6, 10) && longSuitLength) {
       const suit = lengthsArray.find((el) => el.length === longSuitLength).suit;
+      if (suit === suitsEnum.CLUBS && longSuitLength === 6)
+        return { boolean: false, answer: null };
       return {
         boolean: true,
         answer: {
@@ -101,7 +103,7 @@ export const getOpeningBid = (cards): BidExplanation => {
 
   if (
     (spades.length >= 5 && isInRange(PC, 12, 17)) ||
-    (PC === 11 && shouldOpenIn11(suitsEnum.SPADES))
+    (isInRange(PC, 10, 11) && shouldOpenIn11(suitsEnum.SPADES))
   ) {
     return {
       number: 1,
@@ -111,7 +113,7 @@ export const getOpeningBid = (cards): BidExplanation => {
     };
   } else if (
     (hearts.length >= 5 && isInRange(PC, 12, 17)) ||
-    (PC === 11 && shouldOpenIn11(suitsEnum.HEARTS))
+    (isInRange(PC, 10, 11) && shouldOpenIn11(suitsEnum.HEARTS))
   ) {
     return {
       number: 1,

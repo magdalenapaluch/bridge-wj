@@ -8,8 +8,8 @@ import {
 } from "@mui/material";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import "./App.css";
-import { BiddingUI } from "./components/BiddingUI.tsx";
-import { Card } from "./components/Card.tsx";
+import { BiddingUI } from "./components/BiddingUI/BiddingUI.tsx";
+import { Card } from "./components/Card/Card.tsx";
 import {
   coloredCards,
   higherCardsArray,
@@ -22,6 +22,13 @@ import {
 import { getOpeningBid } from "./helpers/getOpeningBid.ts";
 import SettingsIcon from "@mui/icons-material/Settings";
 import CloseIcon from "@mui/icons-material/Close";
+import { Settings } from "./components/Settings/Settings.tsx";
+
+// TODO: dodać eslinta
+// TODO: dodać jesta i unit testy
+// TODO: zrobić porządek z danymi, trumpami suitami
+// TODO: calle do api wynieść gdzieś
+// TODO: wydzielić komponenty
 
 function App() {
   const [deckId, setDeckId] = useState("");
@@ -167,39 +174,14 @@ function App() {
 
   return (
     <div className="App">
-      <Drawer
-        open={isDrawerOpen}
-        anchor="right"
-        onClose={() => setIsDrowerOpen(false)}
-      >
-        <div className="drawer-row">
-          <IconButton
-            onClick={() => {
-              setIsDrowerOpen(false);
-            }}
-            aria-label="close"
-            color="primary"
-          >
-            <CloseIcon />
-          </IconButton>
-        </div>
-        <FormGroup>
-          <div className="drawer-row">
-            <FormControlLabel
-              label="Pokazuj tylko odpowiedzi, nie chcę zgadywać"
-              labelPlacement="end"
-              control={<Switch onChange={toggleExplanation} />}
-            />
-          </div>
-          <div className="drawer-row">
-            <FormControlLabel
-              label="Jeśli zgadłem, od razu przetasuj"
-              labelPlacement="end"
-              control={<Switch onChange={toggleFastCheck} />}
-            />
-          </div>
-        </FormGroup>
-      </Drawer>
+      <Settings
+        showExplanation={showExplanation}
+        fastCheck={fastCheck}
+        isDrawerOpen={isDrawerOpen}
+        handleClose={() => setIsDrowerOpen(false)}
+        toggleExplanation={toggleExplanation}
+        toggleFastCheck={toggleFastCheck}
+      />
       <div className="wrapper">
         <div className="interface">
           <Button variant="outlined" onClick={reshuffle}>

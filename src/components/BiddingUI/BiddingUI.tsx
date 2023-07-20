@@ -1,7 +1,7 @@
 import { Button, FormGroup, FormControlLabel, Switch } from "@mui/material";
 
 import "./BiddingUI.css";
-import { suitsEnum, Trump, BidExplanation } from "../helpers.ts";
+import { suitsEnum, Trump, BidExplanation } from "../../helpers.ts";
 import { useState } from "react";
 interface BidUIProps {
   handleBidNumber: (n: number) => void;
@@ -28,14 +28,7 @@ const biddingTrumps = [
 export const BiddingUI = (props: BidUIProps) => {
   const [localBidNumber, setLocalBidNumber] = useState<number | null>(null);
   const [localBidTrump, setLocalBidTrump] = useState<Trump>();
-//   console.log(props.bidAnswer);
-//   console.log(
-//     props.bidNumber,
-//     props.bidTrump,
-//     props.bidNumber !== null,
-//     props.bidTrump !== undefined,
-//     props.bidNumber === 0
-//   );
+  
   return (
     <div className="biddingUI">
       <div className="row row-numbers">
@@ -80,7 +73,9 @@ export const BiddingUI = (props: BidUIProps) => {
           variant="outlined"
           onClick={() => {
             props.handleBidNumber(localBidNumber);
-            props.handleBidTrump(localBidTrump);
+			props.handleBidTrump(localBidTrump);
+			setLocalBidTrump(null);
+			setLocalBidNumber(null);
           }}
         >
           Potwierdź
