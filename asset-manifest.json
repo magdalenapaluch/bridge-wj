@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/bridge-wj/static/css/main.ba593509.css",
-    "main.js": "/bridge-wj/static/js/main.cb160d97.js",
+    "main.css": "/bridge-wj/static/css/main.4005c131.css",
+    "main.js": "/bridge-wj/static/js/main.a4f09dbd.js",
     "static/js/787.e0abde87.chunk.js": "/bridge-wj/static/js/787.e0abde87.chunk.js",
     "index.html": "/bridge-wj/index.html",
-    "main.ba593509.css.map": "/bridge-wj/static/css/main.ba593509.css.map",
-    "main.cb160d97.js.map": "/bridge-wj/static/js/main.cb160d97.js.map",
+    "main.4005c131.css.map": "/bridge-wj/static/css/main.4005c131.css.map",
+    "main.a4f09dbd.js.map": "/bridge-wj/static/js/main.a4f09dbd.js.map",
     "787.e0abde87.chunk.js.map": "/bridge-wj/static/js/787.e0abde87.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ba593509.css",
-    "static/js/main.cb160d97.js"
+    "static/css/main.4005c131.css",
+    "static/js/main.a4f09dbd.js"
   ]
 }
