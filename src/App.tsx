@@ -244,7 +244,7 @@ function App() {
           )}
         </div>
       </div>
-      <p style={{ textAlign: "right", fontSize: "12px" }}>v0.0.8</p>
+      <p style={{ textAlign: "right", fontSize: "12px" }}>v0.0.9</p>
     </div>
   );
 }
