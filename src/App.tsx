@@ -1,5 +1,5 @@
 import { Button, FormControlLabel, FormGroup, Switch } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import "./App.css";
 import { BiddingUI } from "./components/BiddingUI.tsx";
 import { Card } from "./components/Card.tsx";
@@ -22,6 +22,7 @@ function App() {
     null
   );
   const [showExplanation, setShowExplanataion] = useState(false);
+  const [fastCheck, setFastCheck] = useState(false);
   const [bidNumber, setBidNumber] = useState<number | null>(null);
   const [bidTrump, setBidTrump] = useState<Trump>();
   const [tested, setTested] = useState<boolean | null>(null);
@@ -45,6 +46,7 @@ function App() {
   };
 
   const reshuffle = () => {
+    console.log("reshuffle");
     if (!deckId) return;
     setTested(null);
     setIsLoading(true);
@@ -62,8 +64,13 @@ function App() {
         get13CardsFromDeckId().then((cards) => {
           const { spades, hearts, clubs, diamonds } = coloredCards(cards);
           const southCards = [...spades, ...hearts, ...clubs, ...diamonds];
+          const bid = getOpeningBid(southCards);
+          if (bid.PC < 6) {
+            reshuffle();
+            return;
+          }
           setSouthCards(southCards);
-          setSouthOpeningBid(getOpeningBid(southCards));
+          setSouthOpeningBid(bid);
         });
       })
       .catch((error) => {
@@ -114,6 +121,9 @@ function App() {
   const toggleExplanation = () => {
     setShowExplanataion((e) => !e);
   };
+  const toggleFastCheck = () => {
+    setFastCheck((e) => !e);
+  };
 
   const southCardsList = useMemo(
     () =>
@@ -129,17 +139,22 @@ function App() {
   const handleBidTrump = (trump) => {
     setBidTrump(trump);
   };
-  const checkAnswer = () => {
-    console.log(southOpeningBid, bidNumber, bidTrump);
+  useEffect(() => {
+    if (!southOpeningBid) return;
     if (
       southOpeningBid.number === bidNumber &&
       southOpeningBid.trump == bidTrump
     ) {
+      if (fastCheck) {
+        reshuffle();
+        return;
+      }
       setTested(true);
     } else {
       setTested(false);
     }
-  };
+  }, [bidNumber, bidTrump]);
+
   return (
     <div className="App">
       <div className="wrapper">
@@ -154,12 +169,19 @@ function App() {
               control={<Switch onChange={toggleExplanation} />}
             />
           </FormGroup>
+          <FormGroup>
+            <FormControlLabel
+              label="Jeśli OK - przetasuj"
+              labelPlacement="bottom"
+              control={<Switch onChange={toggleFastCheck} />}
+            />
+          </FormGroup>
         </div>
         <div className="cards-wrapper">
           <div className="cards">{southCardsList}</div>
         </div>
         <div className="bid">
-          {!isLoading && southOpeningBid && showExplanation && (
+          {!isLoading && southOpeningBid && showExplanation && tested === null && (
             <>
               <h2>{`${southOpeningBid.bidString}`}</h2>
               <p>{`${southOpeningBid.explanationString}`}</p>
@@ -167,12 +189,8 @@ function App() {
           )}
           {tested === null && !showExplanation && (
             <BiddingUI
-              bidNumber={bidNumber}
               handleBidNumber={handleBidNumber}
-              bidTrump={bidTrump}
               handleBidTrump={handleBidTrump}
-              bidAnswer={southOpeningBid}
-              checkAnswer={checkAnswer}
             />
           )}
           {tested !== null && (
@@ -193,9 +211,10 @@ function App() {
                 ) : (
                   <p>
                     Źle, prawidłowa odpowiedź to:
-                    <span className="big">{southOpeningBid.bidString}</span>
+                    <span className="big">{` ${southOpeningBid?.bidString}`}</span>
                   </p>
                 )}
+				<p>{`${southOpeningBid?.explanationString}`}</p>
               </div>
               <Button variant="outlined" onClick={reshuffle}>
                 Przetasuj
@@ -204,7 +223,7 @@ function App() {
           )}
         </div>
       </div>
-      <p style={{ textAlign: "right", fontSize: "12px" }}>v0.0.5</p>
+      <p style={{ textAlign: "right", fontSize: "12px" }}>v0.0.6</p>
     </div>
   );
 }

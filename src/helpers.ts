@@ -48,6 +48,7 @@ export interface BidExplanation {
   trump: Trump;
   bidString: string;
   explanationString: string;
+  PC: number;
 }
 
 export const colorsLibrary = new Map();
@@ -56,21 +57,3 @@ colorsLibrary.set(suitsEnum.SPADES, "♠️");
 colorsLibrary.set(suitsEnum.HEARTS, "♥️");
 colorsLibrary.set(suitsEnum.DIAMONDS, "♦️");
 colorsLibrary.set(suitsEnum.CLUBS, "♣️");
-// [
-//     {
-//       name: suitsEnum.SPADES,
-//       suit: "♠️",
-//     },
-//     {
-//       name: suitsEnum.HEARTS,
-//       suit: "♥️",
-//     },
-//     {
-//       name: suitsEnum.DIAMONDS,
-//       suit: "♦️",
-//     },
-//     {
-//       name: suitsEnum.CLUBS,
-//       suit: "♣️",
-//     },
-//   ];

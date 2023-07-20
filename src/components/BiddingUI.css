@@ -21,5 +21,15 @@
 }
 
 .biddingUI_button {
+	display: inline-flex;
+	flex-direction: column;
 	margin: 2px 3px !important;
+}
+
+.button-text {
+	margin: 0;
+}
+
+.small {
+	font-size: 9px;
 }

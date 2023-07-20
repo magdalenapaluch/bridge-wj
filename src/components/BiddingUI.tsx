@@ -1,16 +1,13 @@
-import { Button } from "@mui/material";
+import { Button, FormGroup, FormControlLabel, Switch } from "@mui/material";
 
 import "./BiddingUI.css";
 import { suitsEnum, Trump, BidExplanation } from "../helpers.ts";
+import { useState } from "react";
 interface BidUIProps {
-  bidNumber: number;
   handleBidNumber: (n: number) => void;
-  bidTrump: Trump;
   handleBidTrump: (t: Trump) => void;
-  bidAnswer: BidExplanation;
-  checkAnswer: () => void;
 }
-export const biddingNumbers = [
+const biddingNumbers = [
   { id: 1, text: "1" },
   { id: 2, text: "2" },
   { id: 3, text: "3" },
@@ -18,9 +15,9 @@ export const biddingNumbers = [
   { id: 5, text: "5" },
   { id: 6, text: "6" },
   { id: 7, text: "7" },
-  { id: 0, text: "PAS" },
 ];
-export const biddingTrumps = [
+
+const biddingTrumps = [
   { id: suitsEnum.CLUBS, text: "♣️" },
   { id: suitsEnum.DIAMONDS, text: "♦️" },
   { id: suitsEnum.HEARTS, text: "♥️" },
@@ -29,14 +26,16 @@ export const biddingTrumps = [
 ];
 
 export const BiddingUI = (props: BidUIProps) => {
-  console.log(props.bidAnswer);
-  console.log(
-    props.bidNumber,
-    props.bidTrump,
-    props.bidNumber !== null,
-    props.bidTrump !== undefined,
-    props.bidNumber === 0
-  );
+  const [localBidNumber, setLocalBidNumber] = useState<number | null>(null);
+  const [localBidTrump, setLocalBidTrump] = useState<Trump>();
+//   console.log(props.bidAnswer);
+//   console.log(
+//     props.bidNumber,
+//     props.bidTrump,
+//     props.bidNumber !== null,
+//     props.bidTrump !== undefined,
+//     props.bidNumber === 0
+//   );
   return (
     <div className="biddingUI">
       <div className="row row-numbers">
@@ -44,10 +43,9 @@ export const BiddingUI = (props: BidUIProps) => {
           return (
             <Button
               className="biddingUI_button"
-              variant={number.id === props.bidNumber ? "contained" : "outlined"}
+              variant={number.id === localBidNumber ? "contained" : "outlined"}
               onClick={() => {
-                props.handleBidNumber(number.id);
-                number.id === 0 && props.handleBidTrump(null);
+                setLocalBidNumber(number.id);
               }}
             >
               {number.text}
@@ -59,15 +57,15 @@ export const BiddingUI = (props: BidUIProps) => {
         {biddingTrumps.map((trump) => {
           return (
             <Button
-              disabled={!props.bidNumber}
+              disabled={!localBidNumber}
               className="biddingUI_button"
               variant={
-                trump.id === props.bidTrump && props.bidNumber
+                trump.id === localBidTrump && localBidNumber
                   ? "contained"
                   : "outlined"
               }
               onClick={() => {
-                props.handleBidTrump(trump.id);
+                setLocalBidTrump(trump.id);
               }}
             >
               {trump.text}
@@ -75,16 +73,29 @@ export const BiddingUI = (props: BidUIProps) => {
           );
         })}
       </div>
-      <Button
-        disabled={
-          (!props.bidNumber || !props.bidTrump) && props.bidNumber !== 0
-        }
-        className="biddingUI_button"
-        variant="outlined"
-        onClick={props.checkAnswer}
-      >
-        Potwierdź
-      </Button>
+      <div className="row">
+        <Button
+          disabled={(!localBidNumber || !localBidTrump) && localBidNumber !== 0}
+          className="biddingUI_button"
+          variant="outlined"
+          onClick={() => {
+            props.handleBidNumber(localBidNumber);
+            props.handleBidTrump(localBidTrump);
+          }}
+        >
+          Potwierdź
+        </Button>
+        <Button
+          className="biddingUI_button"
+          variant={"outlined"}
+          onClick={() => {
+            props.handleBidNumber(0);
+            props.handleBidTrump(null);
+          }}
+        >
+          PAS
+        </Button>
+      </div>
     </div>
   );
 };

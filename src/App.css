@@ -24,6 +24,10 @@ body::-webkit-scrollbar {
 	font-size:20px;
 	font-weight: bold;
 }
+
+.small {
+	font-size: 12px;
+}
 @media (prefers-reduced-motion: no-preference) {
 	.App-logo {
 		animation: App-logo-spin infinite 20s linear;
@@ -99,7 +103,10 @@ body::-webkit-scrollbar {
 }
 
 .interface {
-	display: flex;
+	max-width: 500px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
