@@ -23,7 +23,7 @@ export const Card = (props: CardProps) => {
       key={`card-index`}
       className={`card${index === 0 ? " firstCard" : ""}`}
     >
-      <img src={card?.image} className="cardImage front " />
+      <img src={card?.images.png} className="cardImage front " />
     </div>
   );
 };

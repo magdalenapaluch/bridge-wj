@@ -1,4 +1,11 @@
-import { Button, FormControlLabel, FormGroup, Switch } from "@mui/material";
+import {
+  Button,
+  FormControlLabel,
+  FormGroup,
+  Switch,
+  IconButton,
+  Drawer,
+} from "@mui/material";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import "./App.css";
 import { BiddingUI } from "./components/BiddingUI.tsx";
@@ -13,6 +20,8 @@ import {
   colorsLibrary,
 } from "./helpers.ts";
 import { getOpeningBid } from "./helpers/getOpeningBid.ts";
+import SettingsIcon from "@mui/icons-material/Settings";
+import CloseIcon from "@mui/icons-material/Close";
 
 function App() {
   const [deckId, setDeckId] = useState("");
@@ -26,6 +35,7 @@ function App() {
   const [bidNumber, setBidNumber] = useState<number | null>(null);
   const [bidTrump, setBidTrump] = useState<Trump>();
   const [tested, setTested] = useState<boolean | null>(null);
+  const [isDrawerOpen, setIsDrowerOpen] = useState(false);
 
   const getDeckID = () => {
     setIsLoading(true);
@@ -157,25 +167,54 @@ function App() {
 
   return (
     <div className="App">
+      <Drawer
+        open={isDrawerOpen}
+        anchor="right"
+        onClose={() => setIsDrowerOpen(false)}
+      >
+        <div className="drawer-row">
+          <IconButton
+            onClick={() => {
+              setIsDrowerOpen(false);
+            }}
+            aria-label="close"
+            color="primary"
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <FormGroup>
+          <div className="drawer-row">
+            <FormControlLabel
+              label="Pokazuj tylko odpowiedzi, nie chcę zgadywać"
+              labelPlacement="end"
+              control={<Switch onChange={toggleExplanation} />}
+            />
+          </div>
+          <div className="drawer-row">
+            <FormControlLabel
+              label="Jeśli zgadłem, od razu przetasuj"
+              labelPlacement="end"
+              control={<Switch onChange={toggleFastCheck} />}
+            />
+          </div>
+        </FormGroup>
+      </Drawer>
       <div className="wrapper">
         <div className="interface">
           <Button variant="outlined" onClick={reshuffle}>
             Przetasuj
           </Button>
-          <FormGroup>
-            <FormControlLabel
-              label="Pokazuj odpowiedzi"
-              labelPlacement="bottom"
-              control={<Switch onChange={toggleExplanation} />}
-            />
-          </FormGroup>
-          <FormGroup>
-            <FormControlLabel
-              label="Jeśli OK - przetasuj"
-              labelPlacement="bottom"
-              control={<Switch onChange={toggleFastCheck} />}
-            />
-          </FormGroup>
+          <IconButton
+            style={{ position: "absolute", right: 0, top: 0 }}
+            onClick={() => {
+              setIsDrowerOpen(true);
+            }}
+            aria-label="settings"
+            color="primary"
+          >
+            <SettingsIcon />
+          </IconButton>
         </div>
         <div className="cards-wrapper">
           <div className="cards">{southCardsList}</div>
@@ -214,7 +253,7 @@ function App() {
                     <span className="big">{` ${southOpeningBid?.bidString}`}</span>
                   </p>
                 )}
-				<p>{`${southOpeningBid?.explanationString}`}</p>
+                <p>{`${southOpeningBid?.explanationString}`}</p>
               </div>
               <Button variant="outlined" onClick={reshuffle}>
                 Przetasuj
@@ -223,7 +262,7 @@ function App() {
           )}
         </div>
       </div>
-      <p style={{ textAlign: "right", fontSize: "12px" }}>v0.0.7</p>
+      <p style={{ textAlign: "right", fontSize: "12px" }}>v0.0.8</p>
     </div>
   );
 }

@@ -5,7 +5,7 @@
 	align-items: center;
 	min-height: 100vh;
 	flex-direction: column;
-	color: #1F271B;
+	color: #1F271B; 
 }
 
 body::-webkit-scrollbar {
@@ -14,7 +14,8 @@ body::-webkit-scrollbar {
 
 .wrapper {
 	max-width: 1050px;
-	padding-top: 30px;
+	margin-top: 30px;
+	position: relative
 }
 
 .App-logo {
@@ -115,4 +116,11 @@ body::-webkit-scrollbar {
 
 .cards-wrapper {
 	margin: 30px auto;
+}
+
+.drawer-row {
+	border-bottom: 1px solid #F5E9E2;
+	text-align: right;
+	padding-left:20px
+	
 }
