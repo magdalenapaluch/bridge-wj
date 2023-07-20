@@ -49,12 +49,11 @@ export const getOpeningBid = (cards): BidExplanation => {
   const explanation = `${PC}PC, ${colorString()}`;
   const other = { explanationString: explanation, PC: PC };
 
-  //6+, 4441 i 5440 i 55
   const shouldOpenIn11 = (suit: suitsEnum): boolean => {
     const suitLength = lengthsArray.find((el) => el.suit === suit).length;
     return (
       suitLength >= 6 || //6+ w kolorze
-      (suitLength === 5 &&  // 55
+      (suitLength === 5 && // 55
         sortedLengthsArray.filter((number) => number === 5).length >= 2) ||
       (suitLength === 5 && // 5440
         isEqual([5, 4, 4, 0], sortedLengthsArray))
@@ -103,7 +102,7 @@ export const getOpeningBid = (cards): BidExplanation => {
 
   if (
     (spades.length >= 5 && isInRange(PC, 12, 17)) ||
-    (isInRange(PC, 10, 11) && shouldOpenIn11(suitsEnum.SPADES))
+    (PC === 11 && shouldOpenIn11(suitsEnum.SPADES))
   ) {
     return {
       number: 1,
@@ -113,7 +112,7 @@ export const getOpeningBid = (cards): BidExplanation => {
     };
   } else if (
     (hearts.length >= 5 && isInRange(PC, 12, 17)) ||
-    (isInRange(PC, 10, 11) && shouldOpenIn11(suitsEnum.HEARTS))
+    (PC === 11 && shouldOpenIn11(suitsEnum.HEARTS))
   ) {
     return {
       number: 1,
