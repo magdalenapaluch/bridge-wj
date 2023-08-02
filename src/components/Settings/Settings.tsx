@@ -1,5 +1,11 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { Drawer, FormControlLabel, FormGroup, IconButton, Switch } from "@mui/material";
+import {
+  Drawer,
+  FormControlLabel,
+  FormGroup,
+  IconButton,
+  Switch,
+} from "@mui/material";
 import "./Settings.css";
 
 interface SettingsProps {
@@ -42,6 +48,7 @@ export const Settings = (props: SettingsProps) => {
         </div>
         <div className="drawer-row">
           <FormControlLabel
+            disabled={showExplanation}
             label="Jeśli zgadłem, od razu przetasuj"
             labelPlacement="end"
             control={<Switch checked={fastCheck} onChange={toggleFastCheck} />}
