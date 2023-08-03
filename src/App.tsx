@@ -125,7 +125,7 @@ function App() {
     if (!deckId) return;
     get13CardsFromDeckId().then((cards) => {
       const { spades, hearts, clubs, diamonds } = coloredCards(cards);
-      const southCards = [...spades, ...hearts, ...clubs, ...diamonds];
+      const southCards = orderCardsNeatly(spades, hearts, clubs, diamonds);
       setSouthCards(southCards);
       setIsLoading(false);
       setSouthOpeningBid(getOpeningBid(southCards));
