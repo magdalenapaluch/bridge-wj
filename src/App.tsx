@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./App.css";
 import { Bids } from "./components/Bids/Bids.tsx";
 import { Cards } from "./components/Cards/Cards.tsx";
@@ -36,6 +36,8 @@ function App() {
     null
   );
 
+  const ref = useRef();
+
   const getDeckID = () => {
     setIsLoading(true);
     setSouthOpeningBid(null);
@@ -54,6 +56,7 @@ function App() {
   };
 
   const reshuffle = () => {
+    ref.current.reset();
     if (!deckId) return;
     resetAll();
     fetch(`https://www.deckofcardsapi.com/api/deck/${deckId}/shuffle/`)
@@ -132,13 +135,14 @@ function App() {
         toggleOnlyOpening={() => setOnlyOpening((e) => !e)}
       />
       <div className="wrapper">
-		  <h1 className="title">Co otworzysz z tą kartą?</h1>
+        <h1 className="title">Co otworzysz z tą kartą?</h1>
         <Interface
           reshuffle={reshuffle}
           openSettings={() => setIsDrowerOpen(true)}
         />
         <Cards cards={southCards} />
         <Bids
+          ref={ref}
           isLoading={isLoading}
           southOpeningBid={southOpeningBid}
           showExplanation={showExplanation}

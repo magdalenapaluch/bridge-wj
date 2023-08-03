@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { BidExplanation, colorsLibrary, Trump } from "../../helpers.ts";
 import { BiddingUI } from "../BiddingUI/BiddingUI.tsx";
-import { useEffect, useState } from "react";
+import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 
 interface BidsProps {
   isLoading: boolean;
@@ -16,16 +16,11 @@ interface BidsProps {
   reshuffle: () => void;
 }
 
-export const Bids = (props: BidsProps) => {
+export const Bids = forwardRef((props: BidsProps, ref) => {
   const {
     isLoading,
     southOpeningBid,
     showExplanation,
-    // tested,
-    // handleBidNumber,
-    // handleBidTrump,
-    // bidNumber,
-    // bidTrump,
     reshuffle,
     fastCheck,
   } = props;
@@ -33,6 +28,12 @@ export const Bids = (props: BidsProps) => {
   const [bidNumber, setBidNumber] = useState<number | null>(null);
   const [bidTrump, setBidTrump] = useState<Trump>();
   const [tested, setTested] = useState<boolean | null>(null);
+
+  useImperativeHandle(ref, () => ({
+    reset() {
+      reset();
+    },
+  }));
 
   const reset = () => {
     setBidNumber(null);
@@ -107,4 +108,4 @@ export const Bids = (props: BidsProps) => {
       )}
     </div>
   );
-};
+});
