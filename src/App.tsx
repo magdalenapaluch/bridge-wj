@@ -55,6 +55,16 @@ function App() {
     setSouthOpeningBid(null);
   };
 
+  const orderCardsNeatly = (s, h, c, d) => {
+    if (!h.length) {
+      return [...s, ...d, ...c, ...h];
+    }
+    if (!c.length) {
+      return [...h, ...s, ...c, ...d];
+    }
+    return [...s, ...h, ...c, ...d];
+  };
+
   const reshuffle = () => {
     ref.current.reset();
     if (!deckId) return;
@@ -68,7 +78,7 @@ function App() {
       .then(() => {
         get13CardsFromDeckId().then((cards) => {
           const { spades, hearts, clubs, diamonds } = coloredCards(cards);
-          const southCards = [...spades, ...hearts, ...clubs, ...diamonds];
+          const southCards = orderCardsNeatly(spades, hearts, clubs, diamonds);
           const bid = getOpeningBid(southCards);
           if (bid.PC < 6) {
             reshuffle();
@@ -150,7 +160,7 @@ function App() {
           reshuffle={reshuffle}
         />
       </div>
-      <p style={{ textAlign: "right", fontSize: "12px" }}>v0.0.12</p>
+      <p style={{ textAlign: "right", fontSize: "12px" }}>v0.0.13</p>
     </div>
   );
 }
