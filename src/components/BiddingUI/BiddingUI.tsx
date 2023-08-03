@@ -28,7 +28,7 @@ const biddingTrumps = [
 export const BiddingUI = (props: BidUIProps) => {
   const [localBidNumber, setLocalBidNumber] = useState<number | null>(null);
   const [localBidTrump, setLocalBidTrump] = useState<Trump>();
-  
+
   return (
     <div className="biddingUI">
       <div className="row row-numbers">
@@ -68,19 +68,6 @@ export const BiddingUI = (props: BidUIProps) => {
       </div>
       <div className="row">
         <Button
-          disabled={(!localBidNumber || !localBidTrump) && localBidNumber !== 0}
-          className="biddingUI_button"
-          variant="outlined"
-          onClick={() => {
-            props.handleBidNumber(localBidNumber);
-			props.handleBidTrump(localBidTrump);
-			setLocalBidTrump(null);
-			setLocalBidNumber(null);
-          }}
-        >
-          Potwierdź
-        </Button>
-        <Button
           className="biddingUI_button"
           variant={"outlined"}
           onClick={() => {
@@ -89,6 +76,19 @@ export const BiddingUI = (props: BidUIProps) => {
           }}
         >
           PAS
+        </Button>
+        <Button
+          disabled={(!localBidNumber || !localBidTrump) && localBidNumber !== 0}
+          className="biddingUI_button"
+          variant="outlined"
+          onClick={() => {
+            props.handleBidNumber(localBidNumber);
+            props.handleBidTrump(localBidTrump);
+            setLocalBidTrump(null);
+            setLocalBidNumber(null);
+          }}
+        >
+          Potwierdź
         </Button>
       </div>
     </div>
