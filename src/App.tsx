@@ -150,7 +150,7 @@ function App() {
           reshuffle={reshuffle}
         />
       </div>
-      <p style={{ textAlign: "right", fontSize: "12px" }}>v0.0.11</p>
+      <p style={{ textAlign: "right", fontSize: "12px" }}>v0.0.12</p>
     </div>
   );
 }
