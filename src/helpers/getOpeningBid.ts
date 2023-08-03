@@ -140,10 +140,10 @@ export const getOpeningBid = (cards): BidExplanation => {
       ...other,
     };
   } else if (
-    (isInRange(PC, 12, 14) &&
+    (isInRange(PC, 11, 14) &&
       ((clubs.length >= 5 && (hearts.length === 4 || spades.length === 4)) ||
         clubs.length >= 6)) ||
-    (PC === 11 && shouldOpenIn11(suitsEnum.CLUBS))
+    (PC === 11 && shouldOpenIn11(suitsEnum.CLUBS)) //TODO: probably should remove this line, rethink if this makes sense
   ) {
     return {
       number: 2,
